@@ -78,7 +78,7 @@ class Bote2009(object):
         self.data = {}
 
     def readOriginalDataFile(self, dataFilepath):
-        lines = open(dataFilepath, "rb").readlines()
+        lines = open(dataFilepath, "r").readlines()
 
         isReadingFactorsA = False
         isReadingFactorsD = False
@@ -243,7 +243,7 @@ class Bote2009(object):
                       KEY_d1, KEY_d2, KEY_d3, KEY_d4, KEY_d5,
                       KEY_B_ELECTRON, KEY_B_POSITRON, KEY_A_SUBSHELL, KEY_g1, KEY_g2, KEY_g3, KEY_g4]
 
-        reader = csv.DictReader(open(dataFilepath, 'rb'), fieldsname)
+        reader = csv.DictReader(open(dataFilepath, 'r'), fieldsname)
 
         for row in reader:
             atomicNumber = int(row[KEY_ATOMIC_NUMBER])
