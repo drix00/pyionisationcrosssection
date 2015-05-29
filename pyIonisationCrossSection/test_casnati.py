@@ -27,7 +27,7 @@ import logging
 # Local modules.
 
 # Project modules
-import casnati
+import pyIonisationCrossSection.casnati
 
 # Globals and constants variables.
 

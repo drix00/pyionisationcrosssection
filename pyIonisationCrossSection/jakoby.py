@@ -21,7 +21,7 @@ import numpy as np
 # Local modules.
 
 # Project modules
-import units
+import pyIonisationCrossSection.units
 
 # Globals and constants variables.
 

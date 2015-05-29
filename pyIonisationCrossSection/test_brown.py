@@ -22,7 +22,7 @@ import logging
 # Local modules.
 
 # Project modules
-import brown
+import pyIonisationCrossSection.brown
 
 
 # Globals and constants variables.
