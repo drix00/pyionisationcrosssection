@@ -22,7 +22,7 @@ import logging
 # Local modules.
 
 # Project modules
-import jakoby
+import pyIonisationCrossSection.jakoby
 
 # Globals and constants variables.
 

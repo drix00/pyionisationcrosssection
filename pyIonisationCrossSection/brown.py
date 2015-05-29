@@ -21,8 +21,8 @@ import numpy as np
 # Local modules.
 
 # Project modules
-import atomic_shell
-import units
+import pyIonisationCrossSection.atomic_shell
+import pyIonisationCrossSection.units
 
 # Globals and constants variables.
 class Brown1974(object):

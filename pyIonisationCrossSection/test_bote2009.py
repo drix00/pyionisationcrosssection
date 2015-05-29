@@ -24,7 +24,7 @@ import os.path
 import pyHendrixDemersTools.Files as Files
 
 # Project modules
-import bote2009
+import pyIonisationCrossSection.bote2009 as bote2009
 
 # Globals and constants variables.
 
