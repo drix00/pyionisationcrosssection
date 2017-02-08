@@ -1,3 +1,4 @@
 syntax: glob
 .coverage
 *.pyc
+.idea
