@@ -26,7 +26,7 @@ import numpy as np
 # Local modules.
 
 # Project modules
-import pyIonisationCrossSection.atomic_shell
+import pyIonisationCrossSection.atomic_shell as atomic_shell
 
 # Globals and constants variables.
 
