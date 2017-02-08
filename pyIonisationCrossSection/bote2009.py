@@ -26,6 +26,8 @@ from scipy.constants import physical_constants
 # Local modules.
 import pyHendrixDemersTools.Files as Files
 import pyHendrixDemersTools.NumericConversion as NumericConversion
+from pyIonisationCrossSection.units import cm2_to_nm2
+import pyIonisationCrossSection.atomic_shell as ashell
 
 # Project modules
 
@@ -257,6 +259,29 @@ class Bote2009(object):
             del self.data[atomicNumber][subshell][KEY_SUBSHELL]
             for key in self.data[atomicNumber][subshell]:
                 self.data[atomicNumber][subshell][key] = float(self.data[atomicNumber][subshell][key])
+
+    def convert_subshell(self, outside_subshell):
+        if outside_subshell == ashell.SHELL_K:
+            return SUBSHELL_K
+        elif outside_subshell == ashell.SHELL_LI:
+            return SUBSHELL_L1
+        elif outside_subshell == ashell.SHELL_LII:
+            return SUBSHELL_L2
+        elif outside_subshell == ashell.SHELL_LIII:
+            return SUBSHELL_L3
+        elif outside_subshell == ashell.SHELL_MI:
+            return SUBSHELL_M1
+        elif outside_subshell == ashell.SHELL_MII:
+            return SUBSHELL_M2
+        elif outside_subshell == ashell.SHELL_MIII:
+            return SUBSHELL_M3
+        elif outside_subshell == ashell.SHELL_MIV:
+            return SUBSHELL_M4
+        elif outside_subshell == ashell.SHELL_MV:
+            return SUBSHELL_M5
+
+    def ics_nm2(self, atomicNumber, ionisationEnergy_eV, electronEnergy_eV, shell):
+        return cm2_to_nm2(self.crossSection_cm2(electronEnergy_eV, atomicNumber, self.convert_subshell(shell), PARTICLE_ELECTRON))
 
     def crossSection_cm2(self, energy_eV, atomicNumber, subshell, particle):
         if particle == PARTICLE_ELECTRON:

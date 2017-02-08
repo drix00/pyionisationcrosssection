@@ -21,17 +21,15 @@ import numpy as np
 # Local modules.
 
 # Project modules
-import atomic_shell
-from casnati import Casnati
-from brown import Brown1974
+import pyIonisationCrossSection.atomic_shell as atomic_shell
+from pyIonisationCrossSection.casnati import Casnati
+from pyIonisationCrossSection.brown import Brown1974
+from pyIonisationCrossSection.bote2009 import Bote2009, getModel
+from pyIonisationCrossSection.jakoby import Jakoby1987
 
 # Globals and constants variables.
 
 def dataFigure(atomicNumber, ionisationEnergy_eV, modelICS):
-    # N
-    atomicNumber = 7
-    ionisationEnergy_eV = 0.399e3
-
     shell = atomic_shell.SHELL_K
 
     uList = np.arange(1.0, 25.0, 0.1)
@@ -43,9 +41,9 @@ def dataFigure(atomicNumber, ionisationEnergy_eV, modelICS):
 
 def run():
     import matplotlib.pyplot as plt
-    import units
+    import pyIonisationCrossSection.units as units
 
-    modelICSs = {"Casnati (1982)": Casnati(), "Brown (1974)": Brown1974()}
+    modelICSs = {"Casnati (1982)": Casnati(), "Brown (1974)": Brown1974(), "Bote (2009)": getModel(), "Jakoby (1987)": Jakoby1987()}
 
     atomicNumbers = [7, 28, 79]
     ionisationEnergies = {7: 0.399e3, 28: 8.33100e3, 79: 80713.0}
@@ -54,6 +52,7 @@ def run():
         plt.figure()
         plt.title(r"Z = %i" % (atomicNumber))
         for modelICSName in sorted(modelICSs):
+            print(modelICSName)
             uList, sigmaList_nm2 = dataFigure(atomicNumber, ionisationEnergies[atomicNumber], modelICSs[modelICSName])
             sigmaList_m2 = [units.nm2_to_m2(sigma_nm2) for sigma_nm2 in sigmaList_nm2]
             plt.plot(uList, sigmaList_m2, label=modelICSName)
@@ -65,5 +64,4 @@ def run():
     plt.show()
 
 if __name__ == '__main__':  #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=run)
+    run()
