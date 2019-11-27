@@ -19,13 +19,13 @@ import os.path
 import csv
 
 # Third party modules.
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
-from scipy.constants import physical_constants
+# from scipy.constants import physical_constants
 
 # Local modules.
-import pyHendrixDemersTools.Files as Files
-import pyHendrixDemersTools.NumericConversion as NumericConversion
+from pyIonisationCrossSection import get_current_module_path
+# import pyHendrixDemersTools.NumericConversion as NumericConversion
 from pyIonisationCrossSection.units import cm2_to_nm2
 import pyIonisationCrossSection.atomic_shell as ashell
 
@@ -357,8 +357,10 @@ class Bote2009(object):
         if overvoltage < 16.0:
             return 0.0
 
-        a0_m = physical_constants["Bohr radius"][0]
-        a0_cm = NumericConversion.m_To_cm(a0_m)
+        # a0_m = physical_constants["Bohr radius"][0]
+        a0_m = 5.2917721067e-11
+        # a0_cm = NumericConversion.m_To_cm(a0_m)
+        a0_cm = a0_m * 1.0e2
 
         Anlj = self.data[atomicNumber][subshell][KEY_A_SUBSHELL]
 
@@ -385,8 +387,10 @@ class Bote2009(object):
         return crossSection_cm2
 
     def _computeBeta(self, energy_eV):
-        restMass_MeV = physical_constants["electron mass energy equivalent in MeV"][0]
-        restMass_eV = NumericConversion.MeV_To_eV(restMass_MeV)
+        # restMass_MeV = physical_constants["electron mass energy equivalent in MeV"][0]
+        restMass_MeV = 0.5109989461
+        # restMass_eV = NumericConversion.MeV_To_eV(restMass_MeV)
+        restMass_eV = restMass_MeV * 1.0e6
 
         E_eV = energy_eV
         mc2_eV = restMass_eV
@@ -400,8 +404,10 @@ class Bote2009(object):
         return beta
 
     def _computeXi(self, energy_eV):
-        restMass_MeV = physical_constants["electron mass energy equivalent in MeV"][0]
-        restMass_eV = NumericConversion.MeV_To_eV(restMass_MeV)
+        # restMass_MeV = physical_constants["electron mass energy equivalent in MeV"][0]
+        restMass_MeV = 0.5109989461
+        # restMass_eV = NumericConversion.MeV_To_eV(restMass_MeV)
+        restMass_eV = restMass_MeV * 1.0e6
 
         E_eV = energy_eV
         mc2_eV = restMass_eV
@@ -421,13 +427,13 @@ class Bote2009(object):
         self._data = data
 
 def runCreateDataFile():
-    dataFilepath = Files.getCurrentModulePath(__file__, "../data/bote2009_tables.csv")
+    dataFilepath = get_current_module_path(__file__, "../data/bote2009_tables.csv")
 
     model = Bote2009()
     model.createTabulatedDataFile(dataFilepath)
 
 def getModel():
-    dataFilepath = Files.getCurrentModulePath(__file__, "../data/bote2009_Parameters.csv")
+    dataFilepath = get_current_module_path(__file__, "../data/bote2009_Parameters.csv")
 
     model = Bote2009()
     model.readTabulatedDataFile(dataFilepath)
@@ -464,6 +470,19 @@ def runGraphicsBote2009():
 
     plt.show()
 
-if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=runGraphicsBote2009)
+
+def run_sam_mac():
+    model = getModel()
+
+    energy_eV = 3.0e3
+    subshells = [SUBSHELL_L1, SUBSHELL_L2, SUBSHELL_L3]
+    atomic_number = 13
+    particle = PARTICLE_ELECTRON
+
+    for subshell in subshells:
+        cross_sections_cm2 = model.crossSection_cm2(energy_eV, atomic_number, subshell, particle)
+        print("{}: {} cm2".format(subshell, cross_sections_cm2))
+
+
+if __name__ == '__main__':  # pragma: no cover
+    run_sam_mac()
